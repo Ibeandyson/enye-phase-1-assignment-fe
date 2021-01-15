@@ -9,9 +9,9 @@ export default function UserData(props) {
     const [data, setData] = useState([]);
     const [totalRecords, setTotalRecords] = useState();
     const [activePage, setActivePage] = useState(1);
-    const [realData, setRealData] = useState(data);
+    const [realData, setRealData] = useState([]);
     const [search, setSearch] = useState({
-        userName: 'fakeuser'
+        userName: ''
     });
      const [genderFilter, setGenderFilter] = useState({
         Gender: ''
@@ -32,8 +32,11 @@ export default function UserData(props) {
         function isUser(user) {
             return user.UserName === search.userName;
         }
-        const newSearchData = data.find(isUser);
-        setRealData([newSearchData]);
+    
+            const newSearchData = data.filter(isUser);
+            setRealData(newSearchData);
+            console.log("tetx", realData)
+    
     };
 
     // ========== FOR SEARCH BY Gender =========
@@ -124,7 +127,7 @@ export default function UserData(props) {
                             marginLeft="1%"
                             type="submit"
                             iconBefore={SearchIcon}
-                            onClick={userNameHandle}>
+                            onClick={(e) => userNameHandle(e)}>
                         </Button>
                         <Button
                             appearance="primary"
