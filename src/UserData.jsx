@@ -4,7 +4,6 @@ import axios from 'axios';
 import Pagination from 'reactjs-hooks-pagination';
 import {TextInput, Button, Select, SearchIcon} from 'evergreen-ui';
 
-
 export default function UserData(props) {
     const [data, setData] = useState([]);
     const [totalRecords, setTotalRecords] = useState();
@@ -13,7 +12,7 @@ export default function UserData(props) {
     const [search, setSearch] = useState({
         userName: ''
     });
-     const [genderFilter, setGenderFilter] = useState({
+    const [genderFilter, setGenderFilter] = useState({
         Gender: ''
     });
     const [cardFilter, setCardFilter] = useState({
@@ -32,11 +31,8 @@ export default function UserData(props) {
         function isUser(user) {
             return user.UserName === search.userName;
         }
-    
-            const newSearchData = data.filter(isUser);
-            setRealData(newSearchData);
-            console.log("tetx", realData)
-    
+        const newSearchData = data.filter(isUser);
+        setRealData(newSearchData);
     };
 
     // ========== FOR SEARCH BY Gender =========
@@ -51,26 +47,23 @@ export default function UserData(props) {
         setRealData(newSearchData);
     };
 
+    // ========== FOR SEARCH BY PaymentMethod =========
 
-     // ========== FOR SEARCH BY PaymentMethod =========
+    const {PaymentMethod} = genderFilter;
+    const onChangePaymentMethodFilterHandler = e => {
+        setCardFilter({...cardFilter, [e.target.name]: e.target.value});
+        function isUser(user) {
+            return user.PaymentMethod === e.target.value;
+        }
+        const newSearchData = data.filter(isUser);
+        setRealData(newSearchData);
+    };
 
-     const {PaymentMethod} = genderFilter;
-     const  onChangePaymentMethodFilterHandler = e => {
-         setCardFilter({...cardFilter, [e.target.name]: e.target.value});
-         function isUser(user) {
-             return user.PaymentMethod === e.target.value;
-         }
-         const newSearchData = data.filter(isUser);
-         setRealData(newSearchData);
-     };
-  
- // ========== GET ALL USERS =========
+    // ========== GET ALL USERS =========
     const allUsersHandle = e => {
         e.preventDefault();
         setRealData(data);
     };
-
-    console.log(realData);
 
     // =========== LOGIC FOR DISPLAYIN THE DATA IN PAGINATION =============
 
@@ -82,7 +75,6 @@ export default function UserData(props) {
     //======== FUNCTION TO CHANGE PAGE =============
 
     const handlePageChange = pageNumber => {
-        console.log(`active page is ${pageNumber}`);
         setActivePage(pageNumber);
     };
 
@@ -127,8 +119,8 @@ export default function UserData(props) {
                             marginLeft="1%"
                             type="submit"
                             iconBefore={SearchIcon}
-                            onClick={(e) => userNameHandle(e)}>
-                        </Button>
+                            onClick={e => userNameHandle(e)}
+                        />
                         <Button
                             appearance="primary"
                             intent="success"
@@ -148,15 +140,19 @@ export default function UserData(props) {
                             <option value="Prefer to skip">Prefer to skip</option>
                         </Select>
 
-                        <Select width="40%" marginLeft="1%" name="Gender" value={PaymentMethod} onChange={e => onChangePaymentMethodFilterHandler(e)}>
+                        <Select
+                            width="40%"
+                            marginLeft="1%"
+                            name="Gender"
+                            value={PaymentMethod}
+                            onChange={e => onChangePaymentMethodFilterHandler(e)}>
                             <option hidden selected>
-                            Filter by PaymentMethod
+                                Filter by PaymentMethod
                             </option>
                             <option value="cc">cc</option>check
                             <option value="check">Check</option>
                             <option value="money order">Money order</option>
                             <option value="paypal">Paypal</option>
-                           
                         </Select>
                     </div>
                 </div>
